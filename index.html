@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+<!-- With injected version -->
+<link rel="icon" href="/dfrifinal/favicon.png?ver=${APP_VERSION}" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Prevent browser caching -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <title>RSSDI Registry of Diabetic Foot Ulcers</title>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <!-- Clear old caches -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      caches.keys().then((names) => names.forEach(caches.delete));
+      navigator.serviceWorker.getRegistrations().then((registrations) =>
+        registrations.forEach((r) => r.unregister())
+      );
+    }
+  </script>
+
+  <!-- Vite entry point (during dev) -->
+  <script type="module" src="/src/main.jsx?ver=<%= APP_VERSION %>"></script>
+</body>
+
+</html>

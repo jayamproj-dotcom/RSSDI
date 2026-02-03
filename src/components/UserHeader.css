@@ -1,0 +1,249 @@
+/* Dashboard Header */
+.user-dashboard-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 0 24px;
+}
+
+.user-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
+    height: 70px;
+}
+
+.user-logo-container {
+    display: flex;
+    align-items: center;
+}
+.user-logo-container {
+    padding: 10px;
+}
+
+.user-logo-placeholder {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    /* Adjust spacing between logos */
+}
+
+.user-logo-placeholder img {
+    height: 55px;
+    /* Or adjust based on your layout */
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.user-logo-placeholder img:hover {
+    transform: scale(1.05);
+    /* Slight zoom on hover */
+}
+/* Profile Section */
+.user-profile-section {
+    position: relative;
+}
+
+.user-profile-skeleton {
+    width: 120px;
+    height: 36px;
+    background: #f3f4f6;
+    border-radius: 18px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.user-profile-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f3f2f2;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.user-profile-button:hover {
+    background: #f3f4f6;
+}
+
+.user-profile-image,
+.user-profile-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-profile-icon {
+    color: #6b7280;
+    font-size: 36px;
+}
+
+.user-profile-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-dropdown-icon {
+    color: #6b7280;
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.user-dropdown-icon.open {
+    transform: rotate(180deg);
+}
+
+/* Profile Dropdown */
+.user-profile-dropdown {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    width: 200px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 16px 0;
+    z-index: 100;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px 12px;
+}
+
+.user-dropdown-profile-image,
+.user-dropdown-profile-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-dropdown-profile-icon {
+    color: #6b7280;
+    font-size: 48px;
+}
+
+.user-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.user-info h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-info p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-dropdown-divider {
+    height: 1px;
+    background: #f3f4f6;
+    margin: 8px 0;
+}
+
+.user-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  text-decoration: none;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 14px;
+    color: #374151;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.user-dropdown-item:hover {
+    background: #f9fafb;
+}
+
+.user-dropdown-item-icon {
+    color: #6b7280;
+    font-size: 16px;
+}
+
+.user-dropdown-item.logout {
+    color: #ef4444;
+}
+
+.user-dropdown-item.logout:hover {
+    background: #fee2e2;
+}
+
+.user-dropdown-item.logout .dropdown-item-icon {
+    color: #ef4444;
+}
+
+/* Google Login Button Customization */
+iframe[src*="accounts.google.com"] {
+    margin-left: 8px;
+}
+.user-dashboard-heading{
+    text-align: center;
+    font-weight: 600;
+}
+.user-dashboard-sub-heading{
+    padding-bottom: 5px;
+}
+@media (max-width: 768px) {
+    .user-dashboard-heading {
+        display: none;
+        /* or flex, or inline-block, etc. */
+    }
+}

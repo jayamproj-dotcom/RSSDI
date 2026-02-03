@@ -1,0 +1,337 @@
+.manage-data-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  /* margin-bottom: var(--space-lg); */
+  padding: 10px 0px;
+}
+
+.page-header h1 {
+  color: var(--sidebar-active);
+  /* margin-bottom: var(--space-xs); */
+  font-size: 25px;
+
+}
+
+.page-header p {
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+.status-badge svg {
+  height: 20px;
+  width: 20px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+}
+
+.completed-icon svg {
+  color: var(--sidebar-active);
+  font-size: 15px;
+}
+
+
+
+
+
+.delete-btn svg {
+  width: 15px;
+  height: 15px;
+
+}
+
+.table-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-secondary);
+
+}
+
+/* Doctor Image */
+.doctor-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.doctor-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+}
+
+/* Status Toggle */
+.status-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.status-toggle-track {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.status-toggle.enabled .status-toggle-track {
+  background-color: var(--sidebar-active);
+}
+
+.status-toggle.disabled .status-toggle-track {
+  background-color: #f87171;
+}
+
+.status-toggle-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-toggle.enabled .status-toggle-thumb {
+  left: calc(100% - 22px);
+}
+
+.status-toggle.disabled .status-toggle-thumb {
+  left: 2px;
+}
+
+.status-icon {
+  font-size: 15px;
+}
+
+.status-toggle.enabled .status-icon {
+  color: var(--sidebar-active);
+}
+
+.status-toggle.disabled .status-icon {
+  color: #f87171;
+}
+
+.status-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+
+
+
+
+.view-action {
+  color: #60a5fa;
+}
+
+.view-action:hover {
+  background-color: #dbeafe;
+}
+
+.edit-action {
+  color: #4ade80;
+}
+
+.edit-action:hover {
+  background-color: #dcfce7;
+}
+
+.delete-action {
+  color: #f87171;
+}
+
+.delete-action:hover {
+  background-color: #fee2e2;
+}
+
+/* Toast Notifications */
+.Toastify__toast {
+  border-radius: 8px !important;
+  font-family: inherit !important;
+  height: 50px;
+}
+
+.Toastify__toast--success {
+  background-color: #4ade80 !important;
+}
+
+.Toastify__toast--info {
+  background-color: #60a5fa !important;
+}
+
+.Toastify__toast--error {
+  background-color: #f87171 !important;
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #555;
+  padding: 12px;
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+
+
+.retry-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.retry-button i {
+  font-size: 1rem;
+}
+
+.retry-button:hover {
+  background-color: #c82333;
+}
+
+/* Widen just this column */
+/* Force width for the 7th column (Sub Admin Access) */
+.manage-doctors-page table th:nth-child(7),
+.manage-doctors-page table td:nth-child(7) {
+  min-width: 200px !important;
+  /* width: 300px !important; */
+  /* max-width: 400px; */
+  white-space: normal !important;
+  word-wrap: break-word;
+}
+
+.access-permissions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.access-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Add these styles to your ManageData.css file */
+
+/* Permission notice styling */
+.permission-notice {
+  display: flex;
+  align-items: center;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  position: relative;
+}
+
+.last-checked {
+  margin-left: auto;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+
+
+.refresh-permissions-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-permissions-btn:hover {
+  background-color: #e9ecef;
+}
+
+.refresh-permissions-btn span {
+  font-size: 14px;
+}
+
+/* Disabled action button styling */
+.action-btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+  border-color: #e2e6ea;
+}
+
+.action-btn.disabled:hover {
+  background-color: #f8f9fa;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Spinner animation */
+.fa-spin {
+  animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.state-dropdown {
+  width: 120px;
+  max-width: 100%;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.state-dropdown:focus {
+  outline: none;
+  border-color: rgb(230, 244, 234);
+  box-shadow: 0 0 0 2px rgba(230,
+      244,
+      234, 0.2);
+}

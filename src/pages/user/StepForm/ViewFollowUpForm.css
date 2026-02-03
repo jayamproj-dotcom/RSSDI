@@ -1,0 +1,250 @@
+/* Base Styles */
+.followup-container {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 24px;
+    color: #1a1a1a;
+}
+
+/* Loading State */
+.followup-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 16px;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.followup-loading p {
+    color: #4b5563;
+    font-size: 1.1rem;
+}
+
+/* Error State */
+.followup-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f8fafc;
+}
+
+.error-card {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.error-card h2 {
+    color: #1e293b;
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+}
+
+/* Header Styles */
+.followup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* Or center, depending on vertical alignment preference */
+    flex-wrap: wrap;
+    /* Optional: ensures responsiveness on smaller screens */
+    gap: 1rem;
+    /* Optional: spacing between blocks */
+    margin-bottom: 20px;
+}
+
+.header-info {
+    flex: 1;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    /* Optional: handles wrapping on small screens */
+    justify-content: flex-end;
+}
+
+.header-info h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--sidebar-active);;
+    margin-bottom: 12px;
+}
+
+.patient-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.meta-label {
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.meta-value {
+    font-weight: 600;
+    color: #111827;
+}
+
+
+/* Button Styles */
+.btn-primary,
+.btn-secondary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: white;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+}
+
+/* Content Styles */
+.followup-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 28px;
+}
+
+.outcomes-section h2 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.outcome-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.outcome-card label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.outcome-card .outcome-value {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-weight: 500;
+    color: #111827;
+}
+
+.outcome-card .outcome-value.yes {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.outcome-card .outcome-value.no {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.outcome-card .outcome-value.alive {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.outcome-card .outcome-value.deceased {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.outcome-card.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .followup-header {
+        flex-direction: column;
+    }
+
+    .header-actions {
+        justify-content: flex-start;
+    }
+
+    .outcomes-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media print {
+    .header-actions {
+        display: none;
+    }
+
+    .followup-container {
+        padding: 0;
+    }
+}

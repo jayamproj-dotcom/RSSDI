@@ -1,0 +1,55 @@
+/* Updated Tooltip.css */
+.tooltip-container {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    /* Position above the button with some space */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1E3A8A;
+    /* Professional dark blue */
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-container:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #1E3A8A transparent transparent transparent;
+}
+
+/* Adjust the action buttons container to ensure proper spacing */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* Make sure buttons have consistent width */
+.follow-up-action-btn {
+    min-width: 100px;
+    text-align: center;
+}

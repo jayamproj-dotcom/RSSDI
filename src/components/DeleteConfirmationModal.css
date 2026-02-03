@@ -1,0 +1,48 @@
+.delete-confirmation-modal .ant-modal-content {
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.delete-confirmation-modal .ant-modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.delete-confirmation-modal .ant-modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.delete-confirmation-modal .ant-modal-footer {
+    border-top: none;
+    padding-top: 16px;
+    text-align: right;
+}
+
+.delete-confirmation-modal .ant-btn {
+    padding: 8px 16px;
+    height: auto;
+    border-radius: 6px;
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.confirmation-content {
+    padding: 8px 0;
+}
+
+.confirmation-content p {
+    margin-bottom: 8px;
+    color: #666;
+}
+
+.confirmation-content p:last-child {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #ff4d4f;
+}
+.fileconformation-upload {
+    background-color:var(--sidebar-active);
+    color: #fff;
+}

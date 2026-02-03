@@ -1,0 +1,54 @@
+.edit-request-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.edit-request-button.request {
+    background-color: #f0f9ff;
+    color: #0ea5e9;
+    border: 1px solid #bae6fd;
+}
+
+.edit-request-button.request:hover {
+    background-color: #e0f2fe;
+}
+
+.edit-request-button.approved {
+    background-color: #10b981;
+    color: white;
+}
+
+.edit-request-button.approved:hover {
+    background-color: #059669;
+}
+
+.edit-request-button.pending {
+    background-color: #fff7ed;
+    color: #f59e0b;
+    border: 1px solid #fed7aa;
+    cursor: not-allowed;
+}
+
+.edit-request-button.rejected {
+    background-color: #fef2f2;
+    color: #ef4444;
+    border: 1px solid #fecaca;
+}
+
+.edit-request-button.rejected:hover {
+    background-color: #fee2e2;
+}
+
+.edit-request-button.loading {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+}

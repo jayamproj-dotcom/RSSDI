@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  background-color: #f9fafb;
+  color: #1f2937;
+  line-height: 1.6;
+  font-size: 15px;
+}
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+.user-content{
+  flex: 1;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+@media screen and (max-width: 1024px) {
+  .admin-content {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+:root {
+  --color-primary: #2d6a4f;
+  --color-secondary: #2c3e50;
+  --color-secondary-light: #34495e;
+  --color-text-light: #ecf0f1;
+  --color-error: #dc3545;
+  --color-background: #f8f9fa;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --transition-fast: 0.2s;
+  --transition-normal: 0.3s;
+  --radius-sm: 8px;
+  --font-family: 'poppins', sans-serif;
+}
+
+

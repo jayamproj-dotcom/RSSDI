@@ -1,0 +1,45 @@
+.message-to-doctor {
+    display: inline-flex;
+    align-items: center;
+background-color: #fff1f0;
+    color: #f5222d;
+    border: 1px solid #ffa39e;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 15px;
+    position: relative;
+    justify-content: center;
+    margin: 10px 0;
+    max-width: 65%;
+    box-shadow: 0 2px 6px rgba(0, 188, 212, 0.15);
+}
+@media (max-width:1024px) {
+    .message-to-doctor {
+
+max-width: 100% ;
+
+    }
+}
+.message-to-doctor:hover{
+background-color:var(--sidebar-active) ;
+border: 1px solid #fff;
+color: #fff;
+}
+
+.message-to-doctor .message-text {
+    flex: 1;
+    padding-right: 10px;
+}
+
+.message-to-doctor .close-button {
+    background: none;
+    border: none;
+    font-size: 25px;
+    color: #ff1744;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+/* .message-to-doctor .close-button:hover {
+    color: var(--sidebar-active);
+} */

@@ -1,0 +1,287 @@
+/* Base Styles */
+.upload-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.upload-popup-container {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: popupFadeIn 0.3s ease-out;
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header Styles */
+.upload-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.upload-popup-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.upload-popup-header button {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.upload-popup-header button:hover {
+    color: #333;
+}
+
+/* Body Styles */
+.upload-popup-body {
+    padding: 20px;
+}
+
+.upload-instructions {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Upload Area */
+.upload-area-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+@media (min-width: 480px) {
+    .upload-area-container {
+        flex-direction: row;
+    }
+}
+
+.file-upload-label {
+    flex: 1;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-upload-box {
+    border: 2px dashed #4a90e2;
+    border-radius: 8px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.file-upload-box:hover {
+    background-color: #f5f9ff;
+    border-color: #3a7bc8;
+}
+
+.upload-icon {
+    color: #4a90e2;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.upload-text {
+    color: #4a90e2;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.file-types {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.download-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    color: #555;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.download-btn:hover {
+    background-color: #eaeaea;
+}
+
+/* Uploaded Files Section */
+.uploaded-files-section {
+    margin-bottom: 20px;
+}
+
+.uploaded-files-section h4 {
+    margin: 0 0 10px 0;
+    color: #444;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.file-item {
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.file-item:hover {
+    background-color: #f0f0f0;
+}
+
+.file-name {
+    font-size: 0.85rem;
+    color: #444;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80%;
+}
+
+.remove-file-btn {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.remove-file-btn:hover {
+    color: #c0392b;
+}
+
+/* Save Success Message */
+.save-success-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.save-success-message svg {
+    font-size: 1.1rem;
+}
+
+/* Footer Actions */
+.upload-popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 15px 20px;
+    border-top: 1px solid #eaeaea;
+}
+
+.save-later-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 18px;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.save-later-btn:hover:not(:disabled) {
+    background-color: #f5f5f5;
+}
+
+.save-later-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.complete-submission-btn {
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.complete-submission-btn:hover:not(:disabled) {
+    background-color: #3a7bc8;
+}
+
+.complete-submission-btn:disabled {
+    background-color: #a0c0e8;
+    cursor: not-allowed;
+}
+.upload-form-title{
+    color: var(--sidebar-active) !important;
+}
+.ant-modal-title{
+    color: var(--sidebar-active) !important;
+}
+.title-custom {
+    color: var(--sidebar-active) !important;
+}
