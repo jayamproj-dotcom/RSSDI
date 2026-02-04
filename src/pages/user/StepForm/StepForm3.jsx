@@ -23,8 +23,6 @@ const StepForm3 = ({formData, handleChange, errors}) => {
   const monofilamentPoints = ['A', 'B', 'C'];
   const tuningForkPoints = [ 'Big Toe','Medial Malleolus', 'Lateral Malleolus'];
  
-
- 
     const [previewImage, setPreviewImage] = useState(null);
     const [errorMsg, setErrorMsg] = useState('');
   

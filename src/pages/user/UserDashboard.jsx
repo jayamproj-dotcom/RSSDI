@@ -9,10 +9,10 @@ import "./UserDashboard.css";
 import { FilePenLine, CalendarClock, Lock } from "lucide-react";
 import { toast } from "react-toastify";
 import UploadPopup from "../../components/UploadPopup";
-import { apiGet, apiPost } from "../../services/api-helper";
+import { apiGet, apiPost, apiPut } from "../../services/api-helper";
 import MessageBanner from "../../components/MessageBanner/MessageBanner";
 import { FaSync } from "react-icons/fa";
-
+import { API_BASE_URL } from "../../config/api";
 
 const UserDashboard = () => {
     const location = useLocation();
@@ -28,7 +28,9 @@ const UserDashboard = () => {
     const [error, setError] = useState(null);
     const [requestData, setRequestData] = useState(false);
     const [openRow, setOpenRow] = useState(null);
-
+    const [musculoskeletalData, setMusculoskeletalData] = useState({});
+    const [musculoskeletalSubmitted, setMusculoskeletalSubmitted] = useState({});
+    const [savingRowId, setSavingRowId] = useState(null);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -135,7 +137,7 @@ const UserDashboard = () => {
 
             const patientRecords = Array.isArray(records) ? records : [];
 
-           // console.log("API patient patientRecords (raw):", patientRecords);
+            // console.log("API patient patientRecords (raw):", patientRecords);
 
             if (patientRecords.length === 0) {
                 console.warn("No patient records found for doctor ID:", doctorId);
@@ -144,7 +146,7 @@ const UserDashboard = () => {
                 return;
             }
 
-           // console.log("API patient records (raw):", records);
+            // console.log("API patient records (raw):", records);
             // console.log(
             //     "API patient records (summary):",
             //     patientRecords.map((r) => ({
@@ -167,7 +169,7 @@ const UserDashboard = () => {
             );
 
             const mappedRecords = filteredRecords.map((record, index) => {
-            
+
                 const rawDuration =
                     record.follow_up_duration ||
                     record.followUpDuration ||
@@ -251,7 +253,7 @@ const UserDashboard = () => {
                     patient_name: record.patient_name || record.name || "Unknown",
                     appointmentDate: record.appointment_date || record.created_at || new Date().toISOString(),
                     diagnosis: record.diagnosis || "N/A",
-                    status: record.status || "Completed",
+                    status: record.status || "Pending",
                     lastVisit: record.last_visit || record.updated_at || new Date().toISOString(),
                     submissionDate: submissionDate.toISOString(),
                     canEdit: !is24HoursPassed(submissionDate.toISOString()),
@@ -260,7 +262,7 @@ const UserDashboard = () => {
                     doctor_email: record.doctor_email,
                     followUpDuration,
                     followUpData:
-                    localRecords.find((lr) => lr.patientId === (record.id || record.patient_id))?.followUpData || null,
+                        localRecords.find((lr) => lr.patientId === (record.id || record.patient_id))?.followUpData || null,
                     originalRecord: normalizedRecord,
                     follow_up_status: currentFollowUpStatus,
                     followUpDueDate: specificDueDate.toISOString(),
@@ -417,6 +419,93 @@ const UserDashboard = () => {
         loadPatientRecords();
     };
 
+    const handleMusculoskeletalChange = (patientId, value) => {
+        if (musculoskeletalSubmitted[patientId]) return;
+
+        setMusculoskeletalData(prev => ({
+            ...prev,
+            [patientId]: {
+                footDeformities: value
+            }
+        }));
+    };
+
+    const handleSubmitMusculoskeletal = async (rowKey) => {
+        try {
+            setSavingRowId(rowKey);
+            await submitMusculoskeletalAndUpdateRequestData(rowKey);
+        } finally {
+            setSavingRowId(null);
+        }
+    };
+
+
+    // ✅ Function to submit musculoskeletal exam and update request_data
+    const submitMusculoskeletalAndUpdateRequestData = async (patientId) => {
+        if (!musculoskeletalData[patientId]?.footDeformities) {
+            toast.error("Please select an option");
+            return;
+        }
+
+        try {
+            setIsSaving(true);
+
+            // 1️⃣ Submit musculoskeletal data
+            const formData = new FormData();
+            formData.append("footDeformities", musculoskeletalData[patientId].footDeformities);
+
+            const submitResponse = await fetch(`${API_BASE_URL}/patient/step3/${patientId}`, {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!submitResponse.ok) {
+                throw new Error("Musculoskeletal exam submission failed");
+            }
+
+            // 2️⃣ Update request_data = false in backend
+            const updateData = { patientId, request_data: false };
+            const updateResponse = await apiPut('patientbydoctor', updateData);
+
+            if (!updateResponse?.status) {
+                throw new Error("Failed to update request_data in backend");
+            }
+
+            toast.success("Musculoskeletal exam submitted and request data updated!");
+
+            // 3️⃣ Update frontend state & localStorage
+            const updatedDoctorData = doctorData.map((patient) =>
+                patient.patientId === patientId
+                    ? {
+                        ...patient,
+                        originalRecord: {
+                            ...patient.originalRecord,
+                            request_data: false,
+                        },
+                    }
+                    : patient
+            );
+
+            setDoctorData(updatedDoctorData);
+            // localStorage.setItem("patientRecords", JSON.stringify(updatedDoctorData));
+
+            // 4️⃣ Mark as submitted locally
+            setMusculoskeletalSubmitted((prev) => ({
+                ...prev,
+                [patientId]: true,
+            }));
+
+            // Close the expanded row
+            setOpenRow(null);
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message || "Something went wrong");
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+
     const columns = [
         {
             key: "sNo",
@@ -448,37 +537,61 @@ const UserDashboard = () => {
             key: "status",
             header: "Status",
             sortable: true,
-            render: () => (
-                <div className="status-container">
-                    <span className="status-badge completed">Completed</span>
-                </div>
-            ),
+            render: (value) => {
+                const status = String(value || "Pending").toLowerCase().replace(/\s+/g, '-');
+                return (
+                    <div className="status-container">
+                        <span className={`status-badge ${status}`}>{value || "Pending"}</span>
+                    </div>
+                );
+            },
         },
         {
             key: "Request Data",
             header: "Request Data",
             sortable: true,
             render: (row) => {
-                
                 const rowKey = row.patientId;
                 const isOpen = openRow === rowKey;
+
+                // Determine the display state based on request_data
+                const requestDataValue = row.originalRecord.request_data;
+
+                const isCompleted = requestDataValue === false || requestDataValue === "false";
+                const isRequested = requestDataValue === true || requestDataValue === "true";
+                const isNotRequested = requestDataValue === null;
 
                 return (
                     <div>
                         <div
-                            className="status-container"
-                            onClick={() =>
-                                setOpenRow(isOpen ? null : rowKey)
-                            }
+                            className="musculoskeletal-status-column"
+                            onClick={() => {
+                                if (isRequested) {
+                                    setOpenRow(isOpen ? null : rowKey);
+                                }
+                            }}
+                            style={{
+                                cursor: isRequested ? "pointer" : "not-allowed",
+                                opacity: isRequested ? 1 : 0.7,
+                            }}
                         >
-                            <span className="musculoskeletal-status">
-                                Musculoskeletal Exam
-                            </span>
+                            {isCompleted ? (
+                                <div className="status-container">
+                                    <span className="status-badge completed">Completed</span>
+                                </div>
+                            ) : isNotRequested ? (
+                                <div className="status-container">
+                                    <span className="status-badge pending">Not Requested</span>
+                                </div>
+                            ) : (
+                                <span className="musculoskeletal-status">Musculoskeletal Exam</span>
+                            )}
                         </div>
 
-                        {isOpen && (
+
+                        {!isCompleted && isOpen && (
                             <div>
-                                <div className="medical-add-group">
+                                <div className="medical-add-group musculoskeletal-container">
                                     <label className="medical-add-label required">
                                         Does the patient have obvious deformities in the feet?
                                     </label>
@@ -487,7 +600,7 @@ const UserDashboard = () => {
                                         {[
                                             { value: "no", label: "No" },
                                             { value: "minor", label: "Minor" },
-                                            { value: "major", label: "Major" }
+                                            { value: "major", label: "Major" },
                                         ].map((option) => (
                                             <label
                                                 key={`footDeformities-${rowKey}-${option.value}`}
@@ -496,6 +609,13 @@ const UserDashboard = () => {
                                                 <input
                                                     type="radio"
                                                     name={`footDeformities-${rowKey}`}
+                                                    value={option.value}
+                                                    checked={
+                                                        musculoskeletalData[rowKey]?.footDeformities === option.value
+                                                    }
+                                                    onChange={() =>
+                                                        handleMusculoskeletalChange(rowKey, option.value)
+                                                    }
                                                     className="medical-add-radio-button"
                                                 />
                                                 <span className="medical-add-radio-button-label">
@@ -506,14 +626,35 @@ const UserDashboard = () => {
                                     </div>
                                 </div>
 
-                                <button>Submit</button>
+                                <div className="musculoskeletal-btn">
+                                    <button
+                                        className="musculoskeletal-submit-btn"
+                                        disabled={
+                                            !musculoskeletalData[rowKey]?.footDeformities ||
+                                            savingRowId === rowKey
+                                        }
+                                        onClick={() => handleSubmitMusculoskeletal(rowKey)}
+                                    >
+                                        {savingRowId === rowKey ? (
+                                            <span className="btn-spinner" />
+                                        ) : (
+                                            "Submit"
+                                        )}
+                                    </button>
+
+                                    <button
+                                        className="musculoskeletal-close-btn"
+                                        onClick={() => setOpenRow(null)}
+                                    >
+                                        Close
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </div>
                 );
             },
-        }
-,
+        },
         {
             key: "lastVisit",
             header: "Last Visit",
@@ -650,7 +791,7 @@ const UserDashboard = () => {
                 }
 
                 const handleClick = () => {
-                   
+
                     if (row.isAllFollowUpsDone) {
                         toast.info("All 3-month follow-ups completed. No further follow-ups required.");
                         return;
@@ -665,8 +806,8 @@ const UserDashboard = () => {
                                 `Follow-up will be available on ${formatToDDMMYYYY(displayDueDate)}`
                             );
                         } else {
-                                    
-                            if (row.originalRecord.follow_up_1 === "pending"){
+
+                            if (row.originalRecord.follow_up_1 === "pending") {
 
                                 handleSubmitFollowUp({
                                     ...row,
@@ -674,7 +815,7 @@ const UserDashboard = () => {
                                 });
                             }
                             // ✅ Due date passed → open form
-                           
+
                         }
 
                     } else if (follow_up_status === "Completed") {
@@ -685,19 +826,19 @@ const UserDashboard = () => {
                             toast.info(
                                 `Follow-up will be available on ${formatToDDMMYYYY(displayLastDate)}`
                             );
-                        } else {        
-                            if (row.originalRecord.follow_up_1 === "completed" ){
+                        } else {
+                            if (row.originalRecord.follow_up_1 === "completed") {
                                 handleSubmitFollowUp({
                                     ...row,
                                     followUpDueDate: displayLastDate,
                                 });
                             }
-                            else{
+                            else {
                                 toast.info(
                                     `Follow-up will be completed on ${formatToDDMMYYYY(displayLastDate)}`
                                 );
                             }
-                           
+
                         }
 
                         // Completed → directly open form if needed

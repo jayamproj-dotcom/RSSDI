@@ -28,6 +28,8 @@ const StepForm = () => {
 
   const [selectedTest, setSelectedTest] = useState("");
 
+  const [currentStatus, setCurrentStatus] = useState("")
+
   const initialFormState = {
     section1: {
       patient_name: "",
@@ -89,6 +91,7 @@ const StepForm = () => {
       limbIschemiaDuration: "",
       hypertensionDuration: "",
       serumCreatinine: "",
+      status: "",
     },
     section2: {
       Assessment: "",
@@ -564,12 +567,12 @@ const StepForm = () => {
       }
 
       if (field === "hasAmputation") {
-  if (!["no", "minor", "major"].includes(fieldValue)) {
-    newErrors[field] = "Please select amputation status";
-    isValid = false;
-  }
-  return;
-}
+        if (!["no", "minor", "major"].includes(fieldValue)) {
+          newErrors[field] = "Please select amputation status";
+          isValid = false;
+        }
+        return;
+      }
 
       if (field === "footDeformities") {
         if (!["no", "minor", "major"].includes(fieldValue)) {
@@ -630,6 +633,9 @@ const StepForm = () => {
 
           const nestedData = mapFlatToNested(mergedData)
           setFormData(nestedData)
+          if (mergedData.status) {
+            setCurrentStatus(mergedData.status)
+          }
         } catch (error) {
           console.error("Error fetching patient data:", error)
           const initialData = location.state?.initialData?.formData || location.state?.initialData
@@ -782,6 +788,9 @@ const StepForm = () => {
           const nestedData = mapFlatToNested(mergedData);
           console.log("Final nested data for form - footDeformities:", nestedData.section3.footDeformities);
           setFormData(nestedData);
+          if (mergedData.status) {
+            setCurrentStatus(mergedData.status);
+          }
           toast.success("Patient data loaded successfully");
         } catch (error) {
           console.error("Error fetching patient data:", error);
@@ -855,10 +864,15 @@ const StepForm = () => {
   };
 
   // Prepare FormData for API submission
-  const prepareFormDataForAPI = (step) => {
+  const prepareFormDataForAPI = (step, status) => {
     const formDataObj = new FormData()
     const section = `section${step}`
     const validFields = Object.keys(initialFormState[section])
+
+    if (status) {
+      formDataObj.append("status", status);
+    }
+
 
     Object.entries(formData[section]).forEach(([key, value]) => {
       if (!validFields.includes(key)) {
@@ -930,7 +944,8 @@ const StepForm = () => {
       }
 
       console.log("Submitting Step 1 data for patient ID:", patientId)
-      const formDataToSubmit = prepareFormDataForAPI(1)
+      const nextStatus = currentStatus === "Completed" ? "Completed" : "In Progress";
+      const formDataToSubmit = prepareFormDataForAPI(1, nextStatus)
       const url =
         isEditMode && patientId
           ? `${API_BASE_URL}/patient/updatestep1/${patientId}`
@@ -975,7 +990,8 @@ const StepForm = () => {
       }
 
       console.log(`Submitting Step 2 data for patient ID: ${id}`);
-      const formDataToSubmit = prepareFormDataForAPI(2);
+      const nextStatus = currentStatus === "Completed" ? "Completed" : "Partial";
+      const formDataToSubmit = prepareFormDataForAPI(2, nextStatus)
       const response = await fetch(`${API_BASE_URL}/patient/step2/${id}`, {
         method: 'POST',
         body: formDataToSubmit,
@@ -1015,7 +1031,7 @@ const StepForm = () => {
         throw new Error("Please fill all required fields")
       }
       console.log("Submitting Step 3 data for patient ID:", id)
-      const formDataToSubmit = prepareFormDataForAPI(3)
+      const formDataToSubmit = prepareFormDataForAPI(3, "Completed")
       const response = await fetch(`${API_BASE_URL}/patient/step3/${id}`, {
         method: "POST",
         body: formDataToSubmit,
@@ -1035,6 +1051,7 @@ const StepForm = () => {
       }
 
       toast.success("Step 3 data saved successfully!")
+      setCurrentStatus("Completed")
       return true
     } catch (error) {
       console.error("Error submitting step 3:", error)
