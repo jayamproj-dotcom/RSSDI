@@ -928,7 +928,7 @@ const StepForm = () => {
           selectedTestType === "monofilament" &&
           TUNING_FORK_FIELDS.includes(key)
         ) {
-          formDataObj.append(key,""); // 👈 force empty
+          formDataObj.append(key, ""); // 👈 force empty
           return;
         }
 
@@ -936,7 +936,25 @@ const StepForm = () => {
           selectedTestType === "tuningFork" &&
           MONOFILAMENT_FIELDS.includes(key)
         ) {
-          formDataObj.append(key,""); // 👈 force empty
+          formDataObj.append(key, ""); // 👈 force empty
+          return;
+        }
+      }
+
+      // 🔥 SECTION 1 CONDITION DURATION RESET LOGIC
+      if (section === "section1") {
+        const conditionDurationMap = {
+          renalDuration: "renal",
+          retinalDuration: "retinal",
+          cardiovascularDuration: "cardiovascular",
+          cerebrovascularDuration: "cerebrovascular",
+          hypertensionDuration: "hypertension",
+          heartFailureDuration: "heartFailure",
+          limbIschemiaDuration: "limbIschemia",
+        };
+
+        if (conditionDurationMap[key] && formData.section1[conditionDurationMap[key]] === "no") {
+          formDataObj.append(key, ""); // 👈 force empty if condition is 'no'
           return;
         }
       }

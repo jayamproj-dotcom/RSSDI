@@ -218,9 +218,9 @@ const StepForm1 = ({ formData, handleChange, errors, setErrors }) => {
 
 
 
-  //  console.log("hasUlcer value:", formData.section1.hasUlcer);
+    //  console.log("hasUlcer value:", formData.section1.hasUlcer);
 
-  //  console.log("wearFootWear value:", formData.section1.wearFootWear);
+    //  console.log("wearFootWear value:", formData.section1.wearFootWear);
 
     const normalize = (val) =>
         val?.toString().trim().toLowerCase()
@@ -964,6 +964,12 @@ const StepForm1 = ({ formData, handleChange, errors, setErrors }) => {
                                                                     { target: { name: field, value: val } },
                                                                     "section1"
                                                                 );
+                                                                // if (val === "no") {
+                                                                //     handleChange(
+                                                                //         { target: { name: duration, value: "" } },
+                                                                //         "section1"
+                                                                //     );
+                                                                // }
                                                                 setHasHistory((prev) => ({
                                                                     ...prev,
                                                                     [field]: val === "yes",
@@ -1011,6 +1017,12 @@ const StepForm1 = ({ formData, handleChange, errors, setErrors }) => {
                                                                     { target: { name: field, value: val } },
                                                                     "section1"
                                                                 );
+                                                                // if (val === "no") {
+                                                                //     handleChange(
+                                                                //         { target: { name: duration, value: "" } },
+                                                                //         "section1"
+                                                                //     );
+                                                                // }
                                                                 setHasHistory((prev) => ({
                                                                     ...prev,
                                                                     [field]: val === "yes",
