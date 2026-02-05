@@ -964,12 +964,6 @@ const StepForm1 = ({ formData, handleChange, errors, setErrors }) => {
                                                                     { target: { name: field, value: val } },
                                                                     "section1"
                                                                 );
-                                                                // if (val === "no") {
-                                                                //     handleChange(
-                                                                //         { target: { name: duration, value: "" } },
-                                                                //         "section1"
-                                                                //     );
-                                                                // }
                                                                 setHasHistory((prev) => ({
                                                                     ...prev,
                                                                     [field]: val === "yes",
@@ -1017,12 +1011,6 @@ const StepForm1 = ({ formData, handleChange, errors, setErrors }) => {
                                                                     { target: { name: field, value: val } },
                                                                     "section1"
                                                                 );
-                                                                // if (val === "no") {
-                                                                //     handleChange(
-                                                                //         { target: { name: duration, value: "" } },
-                                                                //         "section1"
-                                                                //     );
-                                                                // }
                                                                 setHasHistory((prev) => ({
                                                                     ...prev,
                                                                     [field]: val === "yes",

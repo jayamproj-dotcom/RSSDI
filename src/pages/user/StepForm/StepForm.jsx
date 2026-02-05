@@ -959,10 +959,14 @@ const StepForm = () => {
         }
       }
 
-      // 🔥 SECTION 2 GANGRENE TYPE RESET LOGIC
+      // 🔥 SECTION 2 GANGRENE TYPE & AMPUTATION LEVEL RESET LOGIC
       if (section === "section2") {
         if (key === "gangreneType" && formData.section2.gangrene === "no") {
           formDataObj.append(key, ""); // 👈 force empty if gangrene is 'no'
+          return;
+        }
+        if (key === "amputationLevel" && (formData.section2.amputation === "no" || formData.section2.amputation === "minor")) {
+          formDataObj.append(key, ""); // 👈 force empty if amputation is not major
           return;
         }
       }
