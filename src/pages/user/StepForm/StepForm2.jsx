@@ -6,7 +6,7 @@ import { IMAGE_BASE_URL } from "../../../config/api"
 
 const StepForm2 = ({ formData, handleChange, errors, setErrors }) => {
 
-   console.log('Form Data in StepForm2:', formData.section2);
+  console.log('Form Data in StepForm2:', formData.section2);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -155,7 +155,7 @@ const StepForm2 = ({ formData, handleChange, errors, setErrors }) => {
             </div>
           </div>
 
-        
+
         </div>
 
         {/* Section 2: Assessment */}

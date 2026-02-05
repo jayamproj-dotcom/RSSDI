@@ -959,6 +959,14 @@ const StepForm = () => {
         }
       }
 
+      // 🔥 SECTION 2 GANGRENE TYPE RESET LOGIC
+      if (section === "section2") {
+        if (key === "gangreneType" && formData.section2.gangrene === "no") {
+          formDataObj.append(key, ""); // 👈 force empty if gangrene is 'no'
+          return;
+        }
+      }
+
       // ✅ radio fields FIRST (very important)
       if (isRadioField(key)) {
         if (value === "yes") formDataObj.append(key, "1");
