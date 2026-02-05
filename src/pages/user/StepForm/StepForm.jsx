@@ -969,6 +969,10 @@ const StepForm = () => {
           formDataObj.append(key, ""); // 👈 force empty if amputation is not major
           return;
         }
+        if (key === "other_treatment_details" && formData.section2.other_treatment === "no") {
+          formDataObj.append(key, ""); // 👈 force empty if other treatment is 'no'
+          return;
+        }
       }
 
       // ✅ radio fields FIRST (very important)
