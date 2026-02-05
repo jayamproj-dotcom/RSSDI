@@ -114,7 +114,7 @@ export const handleExport = async (
         if (followUpColumns.includes(field)) {
           const followUpField = field.replace('follow_up_', '');
 
-         
+
           // Map the follow-up field names to the actual nested object structure
           const fieldMapping = {
             survival_status: "survival_status",
@@ -209,6 +209,28 @@ export const handleExport = async (
         // 🔑 Call duration logic for duration fields
         if (Object.values(fieldDurationMap).includes(field)) {
           return getDurationStatus(field, patient);
+        }
+
+        // 🔑 Neurologic Exam Fields (Monofilament & Tuning Fork)
+        const neurologicFields = [
+          "monofilamentLeftA", "monofilamentLeftB", "monofilamentLeftC",
+          "monofilamentRightA", "monofilamentRightB", "monofilamentRightC",
+          "tuningForkRightMedialMalleolus", "tuningForkRightLateralMalleolus", "tuningForkRightBigToe",
+          "tuningForkLeftMedialMalleolus", "tuningForkLeftLateralMalleolus", "tuningForkLeftBigToe"
+        ];
+
+        if (neurologicFields.includes(field)) {
+          if (value === "" || value === null || value === undefined) {
+            return "No Data applicable";
+          }
+          const val = String(value).toLowerCase().trim();
+          if (val === "yes" || val === "1") return "Yes";
+          if (val === "no" || val === "0") return "No";
+          if (val === "not_tested") {
+            return field.toLowerCase().includes("monofilament")
+              ? "Not tested due to ulcer"
+              : "Not tested";
+          }
         }
 
         if (field === "amputationLevel") {
