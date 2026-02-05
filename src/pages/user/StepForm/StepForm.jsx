@@ -236,7 +236,7 @@ const StepForm = () => {
     const valStr = String(value).trim().toLowerCase();
     if (valStr === "yes" || valStr === "1" || valStr === "true" || value === true || value === 1) return "yes";
     if (valStr === "no" || valStr === "0" || valStr === "false" || value === false || value === 0) return "no";
-    return "";
+    return valStr; // Return as is for non-boolean enums
   };
 
   // Fix 3: Add hasAmputation to fieldMappings
@@ -293,7 +293,7 @@ const StepForm = () => {
         tuningForkLeftMedialMalleolus: ["tuningForkLeftMedialMalleolus", "tuning_fork_left_medial_malleolus"],
         tuningForkLeftLateralMalleolus: ["tuningForkLeftLateralMalleolus", "tuning_fork_left_lateral_malleolus"],
         tuningForkLeftBigToe: ["tuningForkLeftBigToe", "tuning_fork_left_big_toe"],
-        footDeformities: ["footDeformities", "footDeformities"],
+        footDeformities: ["footDeformities", "foot_deformities"],
         hairLoss: ["hairLoss", "hair_growth"],
         pulsesPalpable: ["pulsesPalpable", "pulses_palpable"],
         skinTemperature: ["skinTemperature", "skin_temperature"],
@@ -338,7 +338,9 @@ const StepForm = () => {
 
         if (field === "footDeformities") {
           // Get the value from all possible field names
-          const rawValue = flatData.footDeformities || flatData.foot_deformities;
+          const rawValue = (flatData.footDeformities !== undefined && flatData.footDeformities !== null)
+            ? flatData.footDeformities
+            : flatData.foot_deformities;
 
           console.log("Processing footDeformities:", {
             rawValue: rawValue,
@@ -365,10 +367,10 @@ const StepForm = () => {
               nestedData[section][field] = "major";
             }
             else {
-              nestedData[section][field] = ""; // fallback
+              nestedData[section][field] = strValue; // Preserve actual value if it's something else
             }
           } else {
-            nestedData[section][field] = "";
+            nestedData[section][field] = "no"; // Default to "no" rather than "" for better UI match
           }
 
           console.log("Set footDeformities to:", nestedData[section][field]);

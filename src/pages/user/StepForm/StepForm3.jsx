@@ -86,24 +86,26 @@ const StepForm3 = ({ formData, handleChange, errors }) => {
   };
 
 
-// const handleTestTypeChange = (e) => { 
-//   const selectedTestType = e.target.value;
-//   handleChange(e, "section3");
-//   if (selectedTestType === "monofilament") {
-//     TUNING_FORK_FIELDS.forEach((field) => {
-//       handleChange({ target: { name: field, value: null } }, "section3");
-//     });
-//   }
-//   if (selectedTestType === "tuningFork") {
-//     MONOFILAMENT_FIELDS.forEach((field) => {
-//       handleChange({ target: { name: field, value: null } }, "section3");
-//     });
-//   }
-// }; 
+  // const handleTestTypeChange = (e) => { 
+  //   const selectedTestType = e.target.value;
+  //   handleChange(e, "section3");
+  //   if (selectedTestType === "monofilament") {
+  //     TUNING_FORK_FIELDS.forEach((field) => {
+  //       handleChange({ target: { name: field, value: null } }, "section3");
+  //     });
+  //   }
+  //   if (selectedTestType === "tuningFork") {
+  //     MONOFILAMENT_FIELDS.forEach((field) => {
+  //       handleChange({ target: { name: field, value: null } }, "section3");
+  //     });
+  //   }
+  // }; 
 
-const handleTestTypeChange = (e) => { 
-  handleChange(e, "section3");
-}; 
+  const handleTestTypeChange = (e) => {
+    handleChange(e, "section3");
+  };
+
+  const normalize = (val) => val?.toString().trim().toLowerCase();
 
 
   return (
@@ -126,7 +128,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="burningSensation"
                     value="yes"
-                    checked={formData.section3.burningSensation === 'yes'}
+                    checked={normalize(formData.section3.burningSensation) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -139,7 +141,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="burningSensation"
                     value="no"
-                    checked={formData.section3.burningSensation === 'no'}
+                    checked={normalize(formData.section3.burningSensation) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -158,7 +160,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="painWhileWalking"
                     value="yes"
-                    checked={formData.section3.painWhileWalking === 'yes'}
+                    checked={normalize(formData.section3.painWhileWalking) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -170,7 +172,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="painWhileWalking"
                     value="no"
-                    checked={formData.section3.painWhileWalking === 'no'}
+                    checked={normalize(formData.section3.painWhileWalking) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -188,7 +190,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="skinChanges"
                     value="yes"
-                    checked={formData.section3.skinChanges === 'yes'}
+                    checked={normalize(formData.section3.skinChanges) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -200,7 +202,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="skinChanges"
                     value="no"
-                    checked={formData.section3.skinChanges === 'no'}
+                    checked={normalize(formData.section3.skinChanges) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -219,7 +221,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="sensationLoss"
                     value="yes"
-                    checked={formData.section3.sensationLoss === 'yes'}
+                    checked={normalize(formData.section3.sensationLoss) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -231,7 +233,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="sensationLoss"
                     value="no"
-                    checked={formData.section3.sensationLoss === 'no'}
+                    checked={normalize(formData.section3.sensationLoss) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -258,7 +260,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="nailProblems"
                     value="yes"
-                    checked={formData.section3.nailProblems === 'yes'}
+                    checked={normalize(formData.section3.nailProblems) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -270,7 +272,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="nailProblems"
                     value="no"
-                    checked={formData.section3.nailProblems === 'no'}
+                    checked={normalize(formData.section3.nailProblems) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -289,7 +291,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="fungalInfection"
                     value="yes"
-                    checked={formData.section3.fungalInfection === 'yes'}
+                    checked={normalize(formData.section3.fungalInfection) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -301,7 +303,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="fungalInfection"
                     value="no"
-                    checked={formData.section3.fungalInfection === 'no'}
+                    checked={normalize(formData.section3.fungalInfection) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -320,7 +322,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="skinLesions"
                     value="yes"
-                    checked={formData.section3.skinLesions === 'yes'}
+                    checked={normalize(formData.section3.skinLesions) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -332,7 +334,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="skinLesions"
                     value="no"
-                    checked={formData.section3.skinLesions === 'no'}
+                    checked={normalize(formData.section3.skinLesions) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -351,7 +353,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="openCrack"
                     value="yes"
-                    checked={formData.section3.openCrack === 'yes'}
+                    checked={normalize(formData.section3.openCrack) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -363,7 +365,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="openCrack"
                     value="no"
-                    checked={formData.section3.openCrack === 'no'}
+                    checked={normalize(formData.section3.openCrack) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -438,7 +440,7 @@ const handleTestTypeChange = (e) => {
                   type="radio"
                   name="testType"
                   value="monofilament"
-                  checked={formData.section3.testType === 'monofilament'}
+                  checked={normalize(formData.section3.testType) === 'monofilament'}
                   onChange={handleTestTypeChange}
                   className="medical-add-radio-button"
                 />
@@ -450,7 +452,7 @@ const handleTestTypeChange = (e) => {
                   type="radio"
                   name="testType"
                   value="tuningFork"
-                  checked={formData.section3.testType === 'tuningFork'}
+                  checked={normalize(formData.section3.testType) === 'tuningfork'}
                   onChange={handleTestTypeChange}   // ✅ FIXED
                   className="medical-add-radio-button"
                 />
@@ -491,7 +493,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`monofilamentLeft${point}`}
                               value="yes"
-                              checked={formData.section3[`monofilamentLeft${point}`] === 'yes'}
+                              checked={normalize(formData.section3[`monofilamentLeft${point}`]) === 'yes'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -502,7 +504,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`monofilamentLeft${point}`}
                               value="no"
-                              checked={formData.section3[`monofilamentLeft${point}`] === 'no'}
+                              checked={normalize(formData.section3[`monofilamentLeft${point}`]) === 'no'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -513,7 +515,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`monofilamentLeft${point}`}
                               value="not_tested"
-                              checked={formData.section3[`monofilamentLeft${point}`] === 'not_tested'}
+                              checked={normalize(formData.section3[`monofilamentLeft${point}`]) === 'not_tested'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -552,7 +554,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`monofilamentRight${point}`}
                               value="yes"
-                              checked={formData.section3[`monofilamentRight${point}`] === 'yes'}
+                              checked={normalize(formData.section3[`monofilamentRight${point}`]) === 'yes'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -563,7 +565,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`monofilamentRight${point}`}
                               value="no"
-                              checked={formData.section3[`monofilamentRight${point}`] === 'no'}
+                              checked={normalize(formData.section3[`monofilamentRight${point}`]) === 'no'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -574,7 +576,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`monofilamentRight${point}`}
                               value="not_tested"
-                              checked={formData.section3[`monofilamentRight${point}`] === 'not_tested'}
+                              checked={normalize(formData.section3[`monofilamentRight${point}`]) === 'not_tested'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -611,7 +613,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`tuningForkRight${point.replace(/\s+/g, '')}`}
                               value="yes"
-                              checked={formData.section3[`tuningForkRight${point.replace(/\s+/g, '')}`] === 'yes'}
+                              checked={normalize(formData.section3[`tuningForkRight${point.replace(/\s+/g, '')}`]) === 'yes'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -622,7 +624,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`tuningForkRight${point.replace(/\s+/g, '')}`}
                               value="no"
-                              checked={formData.section3[`tuningForkRight${point.replace(/\s+/g, '')}`] === 'no'}
+                              checked={normalize(formData.section3[`tuningForkRight${point.replace(/\s+/g, '')}`]) === 'no'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -633,7 +635,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`tuningForkRight${point.replace(/\s+/g, '')}`}
                               value="not_tested"
-                              checked={formData.section3[`tuningForkRight${point.replace(/\s+/g, '')}`] === 'not_tested'}
+                              checked={normalize(formData.section3[`tuningForkRight${point.replace(/\s+/g, '')}`]) === 'not_tested'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -660,7 +662,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`tuningForkLeft${point.replace(/\s+/g, '')}`}
                               value="yes"
-                              checked={formData.section3[`tuningForkLeft${point.replace(/\s+/g, '')}`] === 'yes'}
+                              checked={normalize(formData.section3[`tuningForkLeft${point.replace(/\s+/g, '')}`]) === 'yes'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -671,7 +673,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`tuningForkLeft${point.replace(/\s+/g, '')}`}
                               value="no"
-                              checked={formData.section3[`tuningForkLeft${point.replace(/\s+/g, '')}`] === 'no'}
+                              checked={normalize(formData.section3[`tuningForkLeft${point.replace(/\s+/g, '')}`]) === 'no'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -682,7 +684,7 @@ const handleTestTypeChange = (e) => {
                               type="radio"
                               name={`tuningForkLeft${point.replace(/\s+/g, '')}`}
                               value="not_tested"
-                              checked={formData.section3[`tuningForkLeft${point.replace(/\s+/g, '')}`] === 'not_tested'}
+                              checked={normalize(formData.section3[`tuningForkLeft${point.replace(/\s+/g, '')}`]) === 'not_tested'}
                               onChange={(e) => handleChange(e, 'section3')}
                               className="medical-add-radio-button"
                             />
@@ -725,7 +727,7 @@ const handleTestTypeChange = (e) => {
                       type="radio"
                       name="footDeformities"
                       value={option.value}
-                      checked={formData.section3.footDeformities === option.value}
+                      checked={normalize(formData.section3.footDeformities) === normalize(option.value)}
                       onChange={(e) => handleChange(e, 'section3')}
                       className="medical-add-radio-button"
                       required
@@ -767,7 +769,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="hairLoss"
                     value="yes"
-                    checked={formData.section3.hairLoss === 'yes'}
+                    checked={normalize(formData.section3.hairLoss) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -779,7 +781,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="hairLoss"
                     value="no"
-                    checked={formData.section3.hairLoss === 'no'}
+                    checked={normalize(formData.section3.hairLoss) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -798,7 +800,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="pulsesPalpable"
                     value="yes"
-                    checked={formData.section3.pulsesPalpable === 'yes'}
+                    checked={normalize(formData.section3.pulsesPalpable) === 'yes'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -810,7 +812,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="pulsesPalpable"
                     value="no"
-                    checked={formData.section3.pulsesPalpable === 'no'}
+                    checked={normalize(formData.section3.pulsesPalpable) === 'no'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -828,7 +830,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="skinTemperature"
                     value="cold"
-                    checked={formData.section3.skinTemperature === 'cold'}
+                    checked={normalize(formData.section3.skinTemperature) === 'cold'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -840,7 +842,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="skinTemperature"
                     value="warm"
-                    checked={formData.section3.skinTemperature === 'warm'}
+                    checked={normalize(formData.section3.skinTemperature) === 'warm'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
@@ -852,7 +854,7 @@ const handleTestTypeChange = (e) => {
                     type="radio"
                     name="skinTemperature"
                     value="normal"
-                    checked={formData.section3.skinTemperature === 'normal'}
+                    checked={normalize(formData.section3.skinTemperature) === 'normal'}
                     onChange={(e) => handleChange(e, 'section3')}
                     className="medical-add-radio-button"
                     required
