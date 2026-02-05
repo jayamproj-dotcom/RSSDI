@@ -6,13 +6,14 @@ import UserLayout from "../../layouts/UserLayout";
 import DataTable from "../../components/DataTable";
 import { formatToDDMMYYYY, is24HoursPassed, calculateRemainingTime } from "../../utils/dateUtils";
 import "./UserDashboard.css";
-import { FilePenLine, CalendarClock, Lock } from "lucide-react";
+import { FilePenLine, CalendarClock, Lock, ChevronDown } from "lucide-react";
 import { toast } from "react-toastify";
 import UploadPopup from "../../components/UploadPopup";
 import { apiGet, apiPost, apiPut } from "../../services/api-helper";
 import MessageBanner from "../../components/MessageBanner/MessageBanner";
 import { FaSync } from "react-icons/fa";
 import { API_BASE_URL } from "../../config/api";
+import RequestDataPopup from "../../components/RequestDataPopup";
 
 const UserDashboard = () => {
     const location = useLocation();
@@ -31,6 +32,8 @@ const UserDashboard = () => {
     const [musculoskeletalData, setMusculoskeletalData] = useState({});
     const [musculoskeletalSubmitted, setMusculoskeletalSubmitted] = useState({});
     const [savingRowId, setSavingRowId] = useState(null);
+    const [showCorrectionPopup, setShowCorrectionPopup] = useState(false);
+    const [correctionPatients, setCorrectionPatients] = useState([]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -271,7 +274,16 @@ const UserDashboard = () => {
                 };
             });
 
-            mappedRecords.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
+            mappedRecords.sort((a, b) => {
+                const aReq = a.originalRecord.request_data === true || a.originalRecord.request_data === "true";
+                const bReq = b.originalRecord.request_data === true || b.originalRecord.request_data === "true";
+
+                if (aReq && !bReq) return -1;
+                if (!aReq && bReq) return 1;
+
+                return new Date(b.submissionDate) - new Date(a.submissionDate);
+            });
+
             const finalRecords = mappedRecords.map((record, index) => ({
                 ...record,
                 sNo: index + 1,
@@ -298,6 +310,24 @@ const UserDashboard = () => {
     useEffect(() => {
         loadPatientRecords();
     }, []);
+
+    useEffect(() => {
+        if (!loading && doctorData.length > 0) {
+            const requested = doctorData.filter(p =>
+                p.originalRecord.request_data === true || p.originalRecord.request_data === "true"
+            );
+
+            if (requested.length > 0) {
+                setCorrectionPatients(requested);
+
+                const sessionShown = sessionStorage.getItem("hasShownCorrectionPopup");
+                if (!sessionShown) {
+                    setShowCorrectionPopup(true);
+                    sessionStorage.setItem("hasShownCorrectionPopup", "true");
+                }
+            }
+        }
+    }, [doctorData, loading]);
 
     const handleEdit = (row) => {
         try {
@@ -584,7 +614,11 @@ const UserDashboard = () => {
                                     <span className="status-badge pending">Not Requested</span>
                                 </div>
                             ) : (
-                                <span className="musculoskeletal-status">Musculoskeletal Exam</span>
+                                <div className="request-data-wrapper">
+                                    <div className="ping-effect"></div>
+                                    <ChevronDown className="bouncing-arrow" size={16} />
+                                    <span className="musculoskeletal-status">Musculoskeletal Exam</span>
+                                </div>
                             )}
                         </div>
 
@@ -956,6 +990,12 @@ const UserDashboard = () => {
                         loadPatientRecords={loadPatientRecords}
                     />
                 )}
+
+                <RequestDataPopup
+                    visible={showCorrectionPopup}
+                    onClose={() => setShowCorrectionPopup(false)}
+                    requestedPatients={correctionPatients}
+                />
 
                 {showUploadPopup && currentPatient && (
                     <UploadPopup

@@ -166,7 +166,7 @@ const DataTable = ({
         try {
             // Call export utility
             await handleExport(filters, "PatientDataExport", setShowExportModal);
-           // toast.success("Patient data exported successfully!");
+            // toast.success("Patient data exported successfully!");
         } catch (error) {
             console.error("Export failed:", error);
             toast.error("Failed to export patient data");
@@ -366,7 +366,7 @@ const DataTable = ({
         if (column.key === "Request Data" && typeof column.render === "function") {
             return column.render(row);
         }
-        
+
         if (column.actions) {
             return (
                 <div className="action-buttons">
@@ -555,7 +555,7 @@ const DataTable = ({
                 'section4_deathDate',
                 'section4_deathReason',
                 'section4_activeUlcer',
-                
+
             ];
 
             // Create headers with friendly names
@@ -683,7 +683,7 @@ const DataTable = ({
                     case 'section1_facilityName': exampleValue = 'City Hospital'; break;
                     case 'section1_facilityLocation': exampleValue = 'Mumbai'; break;
                     case 'section1_facilityType': exampleValue = 'Public'; break;
-                     case 'section1_facilityState': exampleValue = 'tamil nadu'; break;
+                    case 'section1_facilityState': exampleValue = 'tamil nadu'; break;
                     case 'section1_education': exampleValue = 'Graduate'; break;
                     case 'section1_occupation': exampleValue = 'Teacher'; break;
                     case 'section1_maritalStatus': exampleValue = 'Married'; break;
@@ -1048,7 +1048,7 @@ const DataTable = ({
                 </div>
 
                 <div className="action-buttons-container">
-                    
+
                     {showTodayUpdated && (
                         <Tooltip title="Showing today's updated records">
                             <a
@@ -1069,7 +1069,7 @@ const DataTable = ({
                             </a>
                         </Tooltip>
                     )}
-                    
+
                     {/* {showAddNew && (
                         <Tooltip title="Add new patient details">
                             <a
