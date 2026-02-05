@@ -514,9 +514,10 @@ const StepForm = () => {
       "hairLoss",
       "pulsesPalpable",
       "skinTemperature",
-      ...(["minor", "major"].includes(formData.section3.footDeformities)
-        ? ["footDeformities"]
-        : []),
+      "footDeformities",
+      // ...(["minor", "major"].includes(formData.section3.footDeformities)
+      //   ? ["footDeformities"]
+      //   : []),
       "testType",
       ...(formData.section3.testType === "monofilament"
         ? [
@@ -874,48 +875,102 @@ const StepForm = () => {
     }
 
 
+    // Object.entries(formData[section]).forEach(([key, value]) => {
+    //   if (!validFields.includes(key)) {
+    //     console.warn(`Ignoring unexpected field in ${section}: ${key}`)
+    //     return
+    //   }
+
+    //   if (key.endsWith("Preview") || value === null || value === undefined) {
+    //     return
+    //   }
+
+    //   if (key === "footDeformities") {
+    //     formDataObj.append(key, value);
+    //     return;
+    //   }
+
+    //   if (key === "hasAmputation") {
+    //     formDataObj.append(key, value);
+    //     return;
+    //   }
+
+    //   if (isRadioField(key)) {
+    //     formDataObj.append(key, value === "yes" ? "1" : "0")
+    //     return
+    //   }
+
+
+    //   if (value instanceof File) {
+    //     formDataObj.append(key, value)
+    //   } else if (typeof value === "boolean") {
+    //     formDataObj.append(key, value.toString())
+    //   } else {
+    //     formDataObj.append(key, String(value))
+    //   }
+    // })
+
+
+    const MONOFILAMENT_FIELDS = ['monofilamentLeftA', 'monofilamentLeftB', 'monofilamentLeftC', 'monofilamentRightA', 'monofilamentRightB', 'monofilamentRightC'];
+    const TUNING_FORK_FIELDS = ['tuningForkRightBigToe', 'tuningForkRightMedialMalleolus', 'tuningForkRightLateralMalleolus', 'tuningForkLeftBigToe', 'tuningForkLeftMedialMalleolus', 'tuningForkLeftLateralMalleolus'];
+
+    const selectedTestType = formData[section]?.testType;
+
     Object.entries(formData[section]).forEach(([key, value]) => {
-      if (!validFields.includes(key)) {
-        console.warn(`Ignoring unexpected field in ${section}: ${key}`)
-        return
+      if (!validFields.includes(key)) return;
+
+      // ❌ never send preview fields
+      if (key.endsWith("Preview")) return;
+
+      // 🔥 SECTION 3 TEST-TYPE BASED RESET LOGIC
+      if (section === "section3") {
+        if (
+          selectedTestType === "monofilament" &&
+          TUNING_FORK_FIELDS.includes(key)
+        ) {
+          formDataObj.append(key,""); // 👈 force empty
+          return;
+        }
+
+        if (
+          selectedTestType === "tuningFork" &&
+          MONOFILAMENT_FIELDS.includes(key)
+        ) {
+          formDataObj.append(key,""); // 👈 force empty
+          return;
+        }
       }
 
-      if (key.endsWith("Preview") || value === null || value === undefined) {
-        return
-      }
-
-      if (key === "footDeformities") {
-        formDataObj.append(key, value);
-        return;
-      }
-
-      if (key === "hasAmputation") {
-        // const map = {
-        //   no: "No",
-        //   minor: "Minor",
-        //   major: "Major",
-        // };
-        // formDataObj.append("hasAmputation", map[value] || "No");
-        formDataObj.append(key, value);
-        return;
-      }
-
-
-
+      // ✅ radio fields FIRST (very important)
       if (isRadioField(key)) {
-        formDataObj.append(key, value === "yes" ? "1" : "0")
-        return
+        if (value === "yes") formDataObj.append(key, "1");
+        else if (value === "no") formDataObj.append(key, "0");
+        else formDataObj.append(key, "");
+        return;
       }
 
+      // ✅ Section 3 non-radio: null → ""
+      if (section === "section3" && (value === null || value === undefined)) {
+        formDataObj.append(key, "");
+        return;
+      }
+
+      // ❌ other sections: skip null
+      if (value === null || value === undefined) return;
+
+      if (key === "footDeformities" || key === "hasAmputation") {
+        formDataObj.append(key, value);
+        return;
+      }
 
       if (value instanceof File) {
-        formDataObj.append(key, value)
+        formDataObj.append(key, value);
       } else if (typeof value === "boolean") {
-        formDataObj.append(key, value.toString())
+        formDataObj.append(key, value.toString());
       } else {
-        formDataObj.append(key, String(value))
+        formDataObj.append(key, String(value));
       }
-    })
+    });
 
     const currentUser = JSON.parse(sessionStorage.getItem("userInfo") || {})
     formDataObj.append("doctor_id", currentUser?.id || "")
@@ -932,6 +987,53 @@ const StepForm = () => {
 
     return formDataObj
   }
+
+
+  //   const prepareFormDataForAPI = (step, status) => {
+  //   const formDataObj = new FormData();
+  //   const section = `section${step}`;
+  //   const validFields = Object.keys(initialFormState[section]);
+
+  //   if (status) {
+  //     formDataObj.append("status", status);
+  //   }
+
+  //   Object.entries(formData[section]).forEach(([key, value]) => {
+
+  //     if (!validFields.includes(key)) return;
+
+  //     if (key.endsWith("Preview")) return;
+
+  //     if (value === null || value === undefined) {
+  //       formDataObj.append(key, "");
+  //       return;
+  //     }
+
+  //     if (isRadioField(key)) {
+  //       if (value === "yes") formDataObj.append(key, "1");
+  //       else if (value === "no") formDataObj.append(key, "0");
+  //       else formDataObj.append(key, ""); // not_tested
+  //       return;
+  //     }
+
+  //     if (value instanceof File) {
+  //       formDataObj.append(key, value);
+  //     } else {
+  //       formDataObj.append(key, String(value));
+  //     }
+  //   });
+
+  //   const currentUser = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
+  //   formDataObj.append("doctor_id", currentUser?.id || "");
+  //   formDataObj.append("doctor_email", currentUser?.email || "");
+
+  //   if (isEditMode && patientId) {
+  //     formDataObj.append("id", patientId);
+  //   }
+
+  //   return formDataObj;
+  // };
+
 
   // Submit step 1 data
   const submitStep1 = async () => {

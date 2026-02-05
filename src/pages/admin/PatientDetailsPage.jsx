@@ -125,8 +125,8 @@ const PatientDetailsPage = () => {
             // amputationType: "",
             amputationLevel: "",
             antibioticsGiven: "",
-            surgicalProcedure:"",
-            surgicalProcedureOther:"",
+            surgicalProcedure: "",
+            surgicalProcedureOther: "",
             woundReferenceFile: "",
             woundReferenceFilePreview: "",
             woundReferenceConsent: "",
@@ -304,7 +304,7 @@ const PatientDetailsPage = () => {
                     for (const variant of fieldMappings[section][field]) {
                         if (flatData[variant] !== undefined) {
                             value = flatData[variant]
-                           // console.log(`mapFlatToNested: Found mapping for ${section}.${field} as ${variant}: ${value}`)
+                            // console.log(`mapFlatToNested: Found mapping for ${section}.${field} as ${variant}: ${value}`)
                             break
                         }
                     }
@@ -312,7 +312,7 @@ const PatientDetailsPage = () => {
                     // If no specific mapping, try direct field name
                     if (flatData[field] !== undefined) {
                         value = flatData[field]
-                       // console.log(`mapFlatToNested: Found direct field ${section}.${field}: ${value}`)
+                        // console.log(`mapFlatToNested: Found direct field ${section}.${field}: ${value}`)
                     }
                 }
 
@@ -518,7 +518,7 @@ const PatientDetailsPage = () => {
     const renderStatusBadge = (value) => {
         console.log("Rendering badge for value:", value) // Debug log
         if (!value || value === "N/A" || value === "" || value === null || value === undefined) {
-            return <span className="status-badge neutral">Not tested</span>
+            return <span className="status-badge neutral">Not available</span>
         }
         if (value === "yes" || value === "Yes" || value === "YES") {
             return <span className="status-badge positive">Yes</span>
@@ -531,9 +531,23 @@ const PatientDetailsPage = () => {
 
 
     // Function to render value with fallback
+    // const renderValue = (value) => {
+    //     // console.log("facility", value, patient.section1?.facilityState)
+    //     return value || <span className="text-gray-400">Not available</span>
+    // }
+
     const renderValue = (value) => {
         // console.log("facility", value, patient.section1?.facilityState)
-        return value || <span className="text-gray-400">Not available</span>
+        if (!value || value === "N/A" || value === "" || value === null || value === undefined) {
+            return <span className="status-badge neutral">Not available</span>
+        }
+        if (value === "yes" || value === "Yes" || value === "YES") {
+            return <span className="status-badge positive">Yes</span>
+        } else if (value === "no" || value === "No" || value === "NO") {
+            return <span className="status-badge negative">No</span>
+        } else {
+            return <span className="status-badge neutral">{value}</span>
+        }
     }
 
     // Render patient data with all sections
@@ -1210,8 +1224,8 @@ const PatientDetailsPage = () => {
                                             <div className="info-label">Surgical Procedure</div>
                                             <div className="info-value">
                                                 {patient.section2?.surgicalProcedure === "other"
-                                                    ? renderValue(patient.section2?.surgicalProcedureOther)   
-                                                    : renderValue(patient.section2?.surgicalProcedure)}      
+                                                    ? renderValue(patient.section2?.surgicalProcedureOther)
+                                                    : renderValue(patient.section2?.surgicalProcedure)}
                                             </div>
                                         </div>
                                     </div>
