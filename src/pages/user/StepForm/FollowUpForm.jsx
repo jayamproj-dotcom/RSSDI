@@ -199,7 +199,7 @@ const FollowUpForm = () => {
       hospitalStayLength: formData.section4.survivalStatus === "alive" && formData.section4.hospitalized === "yes" && !formData.section4.hospitalStayLength,
       deathDate: formData.section4.survivalStatus === "death" && !formData.section4.deathDate,
       deathReason: formData.section4.survivalStatus === "death" && !formData.section4.deathReason,
-      activeUlcer: !formData.section4.activeUlcer,
+      activeUlcer: formData.section4.survivalStatus === "alive" && !formData.section4.activeUlcer,
     };
 
     const filteredErrors = Object.keys(newErrors).reduce((acc, key) => {
@@ -273,17 +273,17 @@ const FollowUpForm = () => {
         survival_status: formData.section4.survivalStatus
           ? formData.section4.survivalStatus.charAt(0).toUpperCase() + formData.section4.survivalStatus.slice(1)
           : null,
-        has_wound_healed: formData.section4.woundHealed === "yes" ? "Yes" : "No",
+        has_wound_healed: formData.section4.survivalStatus === "alive" && formData.section4.woundHealed ? (formData.section4.woundHealed === "yes" ? "Yes" : "No") : null,
         time_of_healing_days: formData.section4.healingTime ? Number.parseInt(formData.section4.healingTime) : null,
         reason_for_non_healing: formData.section4.nonHealingReason || null,
         surgical_intervention: formData.section4.surgicalIntervention || null,
         amputation_performed: formData.section4.amputationPerformed || null,
         number_of_hospital_visits: formData.section4.hospitalVisits ? Number.parseInt(formData.section4.hospitalVisits) : null,
-        was_hospitalized: formData.section4.hospitalized === "yes" ? "Yes" : "No",
+        was_hospitalized: formData.section4.survivalStatus === "alive" && formData.section4.hospitalized ? (formData.section4.hospitalized === "yes" ? "Yes" : "No") : null,
         length_of_hospital_stay_days: formData.section4.hospitalStayLength ? Number.parseInt(formData.section4.hospitalStayLength) : null,
         date_of_death: formData.section4.deathDate || null,
         reason_for_death: formData.section4.deathReason || null,
-        active_ulcer: formData.section4.activeUlcer === "yes" ? "Yes" : "No",
+        active_ulcer: formData.section4.survivalStatus === "alive" && formData.section4.activeUlcer ? (formData.section4.activeUlcer === "yes" ? "Yes" : "No") : null,
         follow_up_date: now.toISOString(),
       };
 
@@ -323,12 +323,20 @@ const FollowUpForm = () => {
     <FormLayout>
       <div className="medical-add-container">
         <div className="form-header">
-          <h2 className="medical-add-section-title">{isUpdate ? "Update" : "Add"} Follow-up Assessment</h2>
+          <h2 className="medical-add-section-title">
+            {isUpdate ? "Update" : "Add"} Follow-up Assessment
+          </h2>
           <div>
             {initialData?.lastFollowUpDate && (
-              <small className="last-followup">Last follow-up: {formatToDDMMYYYY(initialData.lastFollowUpDate)}</small>
+              <small className="last-followup">
+                Last follow-up: {formatToDDMMYYYY(initialData.lastFollowUpDate)}
+              </small>
             )}
-            <button type="button" onClick={() => navigate(-1)} className="dashboard-btn">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="dashboard-btn"
+            >
               <ArrowLeftToLine size={18} />
               <span>Back</span>
             </button>
@@ -338,17 +346,18 @@ const FollowUpForm = () => {
         <form onSubmit={handleSubmit} className="medical-add-form">
           <div className="medical-add-section step-form-4">
             <h2 className="medical-add-section-title">
-            {followup1 === "pending" ? 
-            "First Treatment Outcomes (after 3 months)" : "Final Treatment Outcomes (after 6 months)"
-            }
-              
+              {followup1 === "pending"
+                ? "First Treatment Outcomes (after 3 months)"
+                : "Final Treatment Outcomes (after 6 months)"}
             </h2>
 
             <div className="col-md-6 medical-add-group">
               <label className="required" style={{ minWidth: "350px" }}>
                 Survival status
               </label>
-              <div className={`medical-add-radio-group ${errors.survivalStatus ? "error" : ""}`}>
+              <div
+                className={`medical-add-radio-group ${errors.survivalStatus ? "error" : ""}`}
+              >
                 <label className="medical-add-radio-label">
                   <input
                     type="radio"
@@ -372,92 +381,154 @@ const FollowUpForm = () => {
                   <span className="medical-add-radio-button-label">Death</span>
                 </label>
               </div>
-              {errors.survivalStatus && <span className="error-message">This field is required</span>}
+              {errors.survivalStatus && (
+                <span className="error-message">This field is required</span>
+              )}
 
               {formData.section4.survivalStatus === "alive" && (
                 <div className="medical-add-row3">
                   <div className="col-md-4 medical-add-group">
-                    <label className="medical-add-label required">Has the wound healed?</label>
-                    <div className={`medical-add-radio-group ${errors.woundHealed ? "error" : ""}`}>
+                    <label className="medical-add-label required">
+                      Has the wound healed?
+                    </label>
+                    <div
+                      className={`medical-add-radio-group ${errors.woundHealed ? "error" : ""}`}
+                    >
                       <label className="medical-add-radio-label">
                         <input
                           type="radio"
                           name="woundHealed"
                           value="yes"
-                          checked={formData.section4.woundHealed === 'yes'}
-                          onChange={(e) => handleChange(e, 'section4')}
+                          checked={formData.section4.woundHealed === "yes"}
+                          onChange={(e) => handleChange(e, "section4")}
                           className="medical-add-radio-button"
                         />
-                        <span className="medical-add-radio-button-label">Yes</span>
+                        <span className="medical-add-radio-button-label">
+                          Yes
+                        </span>
                       </label>
                       <label className="medical-add-radio-label">
                         <input
                           type="radio"
                           name="woundHealed"
                           value="no"
-                          checked={formData.section4.woundHealed === 'no'}
-                          onChange={(e) => handleChange(e, 'section4')}
+                          checked={formData.section4.woundHealed === "no"}
+                          onChange={(e) => handleChange(e, "section4")}
                           className="medical-add-radio-button"
                         />
-                        <span className="medical-add-radio-button-label">No</span>
+                        <span className="medical-add-radio-button-label">
+                          No
+                        </span>
                       </label>
                     </div>
-                    {errors.woundHealed && <span className="error-message">This field is required</span>}
+                    {errors.woundHealed && (
+                      <span className="error-message">
+                        This field is required
+                      </span>
+                    )}
                   </div>
 
-                  {['yes', 'no'].includes(formData.section4.woundHealed) && (
+                  {["yes", "no"].includes(formData.section4.woundHealed) && (
                     <>
-                      {formData.section4.woundHealed === 'yes' && (
+                      {formData.section4.woundHealed === "yes" && (
                         <div className="col-md-4 medical-add-group">
-                          <label className="medical-add-label required">Healing Time (in days)</label>
+                          <label className="medical-add-label required">
+                            Healing Time (in days)
+                          </label>
                           <input
                             type="number"
                             name="healingTime"
                             className={`form-control ${errors.healingTime ? "error" : ""}`}
-                            value={formData.section4.healingTime || ''}
-                            onChange={(e) => handleChange(e, 'section4')}
+                            value={formData.section4.healingTime || ""}
+                            onChange={(e) => handleChange(e, "section4")}
                           />
-                          {errors.healingTime && <span className="error-message">This field is required</span>}
+                          {errors.healingTime && (
+                            <span className="error-message">
+                              This field is required
+                            </span>
+                          )}
                         </div>
                       )}
 
-                      {formData.section4.woundHealed === 'no' && (
+                      {formData.section4.woundHealed === "no" && (
                         <>
                           <div className="col-md-4 medical-add-group">
-                            <label className="medical-add-label required">Reason</label>
-                            <div className={`medical-add-radio-group ${errors.nonHealingReason ? "error" : ""}`}>
-                              {['Loss of follow up', 'Non compliance', 'Healed and reoccurrence'].map((reason) => (
-                                <label key={reason} className="medical-add-radio-label">
+                            <label className="medical-add-label required">
+                              Reason
+                            </label>
+                            <div
+                              className={`medical-add-radio-group ${errors.nonHealingReason ? "error" : ""}`}
+                            >
+                              {[
+                                "Loss of follow up",
+                                "Non compliance",
+                                "Healed and reoccurrence",
+                              ].map((reason) => (
+                                <label
+                                  key={reason}
+                                  className="medical-add-radio-label"
+                                >
                                   <input
                                     type="radio"
                                     name="nonHealingReason"
                                     value={reason}
-                                    checked={formData.section4.nonHealingReason === reason}
-                                    onChange={(e) => handleChange(e, 'section4')}
+                                    checked={
+                                      formData.section4.nonHealingReason ===
+                                      reason
+                                    }
+                                    onChange={(e) =>
+                                      handleChange(e, "section4")
+                                    }
                                     className="medical-add-radio-button"
                                   />
-                                  <span className="medical-add-radio-button-label">{reason}</span>
+                                  <span className="medical-add-radio-button-label">
+                                    {reason}
+                                  </span>
                                 </label>
                               ))}
                             </div>
-                            {errors.nonHealingReason && <span className="error-message">This field is required</span>}
+                            {errors.nonHealingReason && (
+                              <span className="error-message">
+                                This field is required
+                              </span>
+                            )}
                           </div>
 
                           <div className="col-md-4 medical-add-group">
-                            <label className="medical-add-label required">Surgical intervention performed</label>
-                            <div className={`medical-add-radio-group ${errors.surgicalIntervention ? "error" : ""}`}>
-                              {['Callus excision', 'Sequestectomy', 'Incision and drainage', 'Wound debridement', 'Others'].map((option) => (
-                                <label key={option} className="medical-add-radio-label">
+                            <label className="medical-add-label required">
+                              Surgical intervention performed
+                            </label>
+                            <div
+                              className={`medical-add-radio-group ${errors.surgicalIntervention ? "error" : ""}`}
+                            >
+                              {[
+                                "Callus excision",
+                                "Sequestectomy",
+                                "Incision and drainage",
+                                "Wound debridement",
+                                "Others",
+                              ].map((option) => (
+                                <label
+                                  key={option}
+                                  className="medical-add-radio-label"
+                                >
                                   <input
                                     type="radio"
                                     name="surgicalIntervention"
                                     value={option}
-                                    checked={formData.section4.surgicalIntervention === option}
-                                    onChange={(e) => handleChange(e, 'section4')}
+                                    checked={
+                                      formData.section4.surgicalIntervention ===
+                                      option
+                                    }
+                                    onChange={(e) =>
+                                      handleChange(e, "section4")
+                                    }
                                     className="medical-add-radio-button"
                                   />
-                                  <span className="medical-add-radio-button-label">{option}</span>  
-                                </label>               
+                                  <span className="medical-add-radio-button-label">
+                                    {option}
+                                  </span>
+                                </label>
                               ))}
 
                               {/* Show text input only when "Others" is selected */}
@@ -466,64 +537,99 @@ const FollowUpForm = () => {
                                   type="text"
                                   name="surgicalInterventionOther"
                                   value={surgicalInterventionInput}
-                                  onChange={(e) => handleOthersChange(e, "section4")}
+                                  onChange={(e) =>
+                                    handleOthersChange(e, "section4")
+                                  }
                                   placeholder="Please specify"
                                   className="medical-add-text-input"
                                 />
-                              )}   
-
+                              )}
                             </div>
                             {errors.surgicalIntervention && (
-                              <span className="error-message">This field is required</span>
+                              <span className="error-message">
+                                This field is required
+                              </span>
                             )}
                           </div>
 
-
                           <div className="col-md-4 medical-add-group">
-                            <label className="medical-add-label required">Amputation performed?</label>
-                            <div className={`medical-add-radio-group ${errors.amputationPerformed ? "error" : ""}`}>
-                              {['No', 'Minor', 'Major'].map((type) => (
-                                <label key={type} className="medical-add-radio-label">
+                            <label className="medical-add-label required">
+                              Amputation performed?
+                            </label>
+                            <div
+                              className={`medical-add-radio-group ${errors.amputationPerformed ? "error" : ""}`}
+                            >
+                              {["No", "Minor", "Major"].map((type) => (
+                                <label
+                                  key={type}
+                                  className="medical-add-radio-label"
+                                >
                                   <input
                                     type="radio"
                                     name="amputationPerformed"
                                     value={type}
-                                    checked={formData.section4.amputationPerformed === type}
-                                    onChange={(e) => handleChange(e, 'section4')}
+                                    checked={
+                                      formData.section4.amputationPerformed ===
+                                      type
+                                    }
+                                    onChange={(e) =>
+                                      handleChange(e, "section4")
+                                    }
                                     className="medical-add-radio-button"
                                   />
-                                  <span className="medical-add-radio-button-label">{type}</span>
+                                  <span className="medical-add-radio-button-label">
+                                    {type}
+                                  </span>
                                 </label>
                               ))}
                             </div>
-                            {errors.amputationPerformed && <span className="error-message">This field is required</span>}
+                            {errors.amputationPerformed && (
+                              <span className="error-message">
+                                This field is required
+                              </span>
+                            )}
                           </div>
                         </>
                       )}
 
                       <div className="col-md-4 medical-add-group">
-                        <label className="medical-add-label required">No. of hospital visits</label>
+                        <label className="medical-add-label required">
+                          No. of hospital visits
+                        </label>
                         <input
                           type="number"
                           name="hospitalVisits"
                           className={`form-control ${errors.hospitalVisits ? "error" : ""}`}
-                          value={formData.section4.hospitalVisits || ''}
-                          onChange={(e) => handleChange(e, 'section4')}
+                          value={formData.section4.hospitalVisits || ""}
+                          onChange={(e) => handleChange(e, "section4")}
                         />
-                        {errors.hospitalVisits && <span className="error-message">This field is required</span>}
+                        {errors.hospitalVisits && (
+                          <span className="error-message">
+                            This field is required
+                          </span>
+                        )}
                       </div>
 
                       <div className="col-md-4 medical-add-group">
-                        <label className="medical-add-label required">Hospitalization?</label>
-                        <div className={`medical-add-radio-group ${errors.hospitalized ? "error" : ""}`}>
-                          {['yes', 'no'].map((value) => (
-                            <label key={value} className="medical-add-radio-label">
+                        <label className="medical-add-label required">
+                          Hospitalization?
+                        </label>
+                        <div
+                          className={`medical-add-radio-group ${errors.hospitalized ? "error" : ""}`}
+                        >
+                          {["yes", "no"].map((value) => (
+                            <label
+                              key={value}
+                              className="medical-add-radio-label"
+                            >
                               <input
                                 type="radio"
                                 name="hospitalized"
                                 value={value}
-                                checked={formData.section4.hospitalized === value}
-                                onChange={(e) => handleChange(e, 'section4')}
+                                checked={
+                                  formData.section4.hospitalized === value
+                                }
+                                onChange={(e) => handleChange(e, "section4")}
                                 className="medical-add-radio-button"
                               />
                               <span className="medical-add-radio-button-label">
@@ -532,25 +638,54 @@ const FollowUpForm = () => {
                             </label>
                           ))}
                         </div>
-                        {errors.hospitalized && <span className="error-message">This field is required</span>}
+                        {errors.hospitalized && (
+                          <span className="error-message">
+                            This field is required
+                          </span>
+                        )}
                       </div>
 
-                      {formData.section4.hospitalized === 'yes' && (
+                      {formData.section4.hospitalized === "yes" && (
                         <div className="col-md-4 medical-add-group">
-                          <label className="medical-add-label required">Length of stay in hospital: (in days)</label>
+                          <label className="medical-add-label required">
+                            Length of stay in hospital: (in days)
+                          </label>
                           <input
                             type="number"
                             name="hospitalStayLength"
                             className={`form-control ${errors.hospitalStayLength ? "error" : ""}`}
-                            value={formData.section4.hospitalStayLength || ''}
-                            onChange={(e) => handleChange(e, 'section4')}
+                            value={formData.section4.hospitalStayLength || ""}
+                            onChange={(e) => handleChange(e, "section4")}
                           />
-                          {errors.hospitalStayLength && <span className="error-message">This field is required</span>}
+                          {errors.hospitalStayLength && (
+                            <span className="error-message">
+                              This field is required
+                            </span>
+                          )}
                         </div>
                       )}
                     </>
                   )}
-                </div>
+                  <div className="col-md-4 medical-add-group">
+                    <label className="medical-add-label required">Is there any new/active ulcer?</label>
+                        <div className={`medical-add-radio-group ${errors.activeUlcer ? "error" : ""}`}>
+                          {['yes', 'no'].map((value) => (
+                            <label key={value} className="medical-add-radio-label">
+                              <input
+                                type="radio"
+                                name="activeUlcer"
+                                value={value}
+                                checked={formData.section4.activeUlcer === value}
+                                onChange={(e) => handleChange(e, 'section4')}
+                                className="medical-add-radio-button"
+                              />
+                              <span className="medical-add-radio-button-label">{value.charAt(0).toUpperCase() + value.slice(1)}</span>
+                            </label>
+                          ))}
+                        </div>
+                        {errors.activeUlcer && <span className="error-message">This field is required</span>}
+                      </div>
+                    </div>
               )}
 
               {formData.section4.survivalStatus === "death" && (
@@ -565,9 +700,15 @@ const FollowUpForm = () => {
                       value={formData.section4.deathDate}
                       onChange={(e) => handleChange(e, "section4")}
                       className={`medical-add-input ${errors.deathDate ? "error" : ""}`}
-                      onFocus={(e) => e.target.showPicker && e.target.showPicker()}
+                      onFocus={(e) =>
+                        e.target.showPicker && e.target.showPicker()
+                      }
                     />
-                    {errors.deathDate && <span className="error-message">This field is required</span>}
+                    {errors.deathDate && (
+                      <span className="error-message">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   <div className="col-md-6 medical-add-group">
                     <label className="required" style={{ minWidth: "350px" }}>
@@ -580,31 +721,16 @@ const FollowUpForm = () => {
                       className={`medical-add-input ${errors.deathReason ? "error" : ""}`}
                       placeholder="Enter reason for death"
                     />
-                    {errors.deathReason && <span className="error-message">This field is required</span>}
+                    {errors.deathReason && (
+                      <span className="error-message">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                 </div>
               )}
             </div>
 
-            <div className="col-md-4 medical-add-group mt">
-              <label className="medical-add-label required">Is there any new/active ulcer?</label>
-              <div className={`medical-add-radio-group ${errors.activeUlcer ? "error" : ""}`}>
-                {['yes', 'no'].map((value) => (
-                  <label key={value} className="medical-add-radio-label">
-                    <input
-                      type="radio"
-                      name="activeUlcer"
-                      value={value}
-                      checked={formData.section4.activeUlcer === value}
-                      onChange={(e) => handleChange(e, 'section4')}
-                      className="medical-add-radio-button"
-                    />
-                    <span className="medical-add-radio-button-label"> {value.charAt(0).toUpperCase() + value.slice(1)}</span>
-                  </label>
-                ))}
-              </div>
-              {errors.activeUlcer && <span className="error-message">This field is required</span>}
-            </div>
           </div>
 
           <div className="step-form-actions followupformaction">

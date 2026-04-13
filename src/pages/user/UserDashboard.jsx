@@ -807,6 +807,12 @@ const UserDashboard = () => {
             render: (_, row) => {
                 const { followUpDuration, follow_up_status, followUpDueDate, lastFollowUpDate, appointmentDate, last_follow_up_date } = row;
 
+                const followUpstatus = row.originalRecord?.follow_up_2?.toLowerCase() !== "completed";
+
+                const isDeceased = row.originalRecord?.follow_up?.survival_status?.toLowerCase() === "death";
+
+                const deceased = isDeceased && followUpstatus;
+
                 // Calculate due date = appointment date + 3 months
                 let displayDueDate = null;
                 if (appointmentDate) {
@@ -825,6 +831,11 @@ const UserDashboard = () => {
                 }
 
                 const handleClick = () => {
+
+                    if (deceased) {
+                        toast.info("This patient is deceased. No follow-up required.");
+                        return;
+                    }
 
                     if (row.isAllFollowUpsDone) {
                         toast.info("All 3-month follow-ups completed. No further follow-ups required.");
